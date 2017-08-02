@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 define ('ROOT', __DIR__);
 
-require 'autoload.php';
+require '/scripts/autoload.php';
 
 $pdo = new DatabasePDO;
 $movies_retriever = new MoviesRetriever($pdo);
@@ -30,7 +30,7 @@ if (isset($_POST['name'])) {
  <html>
      <head>
          <title>Movies</title>
-         <link rel="stylesheet" type="text/css" href="style.css" />
+         <link rel="stylesheet" type="text/css" href="/css/style.css" />
          <script src="/js/jquery-3.2.1.js"></script>
      </head>
 
@@ -63,7 +63,7 @@ if (isset($_POST['name'])) {
                  <input type="submit" value="Search" />
              </form>
 
-             <form action="/upload.php" method="post" class="upload" enctype="multipart/form-data">
+             <form action="/scripts/upload.php" method="post" class="upload" enctype="multipart/form-data">
                  Select file to upload:
                  <input type="file" name="file" id="file" required >
                  <input type="submit" value="Upload" name="submit">

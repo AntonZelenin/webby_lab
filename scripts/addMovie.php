@@ -2,7 +2,7 @@
 
 define ('ROOT', __DIR__.'/..');
 
-require_once ROOT.'/autoload.php';
+require_once ROOT.'/scripts/autoload.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = htmlspecialchars(strip_tags($_POST['name']));

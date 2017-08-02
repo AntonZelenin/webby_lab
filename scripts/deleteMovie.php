@@ -2,7 +2,7 @@
 
 define ('ROOT', __DIR__.'/..');
 
-require_once ROOT.'/autoload.php';
+require_once ROOT.'/scripts/autoload.php';
 
 if (isset($_POST['id'])) {
     $movie_id = intval($_POST['id']);
