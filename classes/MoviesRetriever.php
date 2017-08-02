@@ -106,20 +106,21 @@ class MoviesRetriever
         $result = $query->fetchAll();
         $movies_id = '';
         foreach ($result as $key => $value) {
-            $movies_id = $value['movie_id'].',';
+            $movies_id .= $value['movie_id'].',';
         }
         $movies_id = substr($movies_id, 0, -1);
 
-
-        $query = $this->pdo->prepare('SELECT movies.id, movies.name, movies.year, formats.format
+        $query = $this->pdo->query("SELECT movies.id, movies.name, movies.year, formats.format
             FROM webby_lab_task.movies
             LEFT JOIN webby_lab_task.formats
             ON movies.format = formats.id
-            WHERE movies.id IN (:id)');
-        $query->execute(['id' => $movies_id]);
+            WHERE movies.id IN ($movies_id)");
+
 
         $movie_mapper = new MovieMapper(new DatabasePDO);
         $movies_id = '';
+
+        // print_r($query->fetchAll());
 
         while ($result = $query->fetch()) {
             $movie = $movie_mapper->movieFromArray($result);
