@@ -12,6 +12,16 @@ class MoviesRetriever
 
     public function getAllMovies() : array
     {
+        $this->getMovies();
+        $movies_actors = $this->getMoviesActors();
+
+        $this->distributeActors($movies_actors);
+
+        return $this->movies;
+    }
+
+    private function getMovies()
+    {
         $query = $this->pdo->prepare('SELECT movies.id, movies.name, movies.year, formats.format
             FROM webby_lab_task.movies
             LEFT JOIN webby_lab_task.formats
@@ -25,7 +35,10 @@ class MoviesRetriever
 
             $this->movies[$movie->getId()] = $movie;
         }
+    }
 
+    private function getMoviesActors() : array
+    {
         $query = $this->pdo->prepare('SELECT movies_actors.movie_id, actors.first_name, actors.last_name
             FROM webby_lab_task.movies_actors
             LEFT JOIN webby_lab_task.actors
@@ -33,35 +46,20 @@ class MoviesRetriever
             ');
         $query->execute();
 
-        $result = $query->fetchAll();
+        return $query->fetchAll();
+    }
 
-        foreach ($result as $key => $actor) {
+    private function distributeActors($actors)
+    {
+        foreach ($actors as $key => $actor) {
             $this->addActorToMovie($actor);
         }
-
-        return $this->movies;
     }
 
     public function getMoviesByName(string $name) : array
     {
-        $query = $this->pdo->prepare('SELECT movies.id, movies.name, movies.year, formats.format
-            FROM webby_lab_task.movies
-            LEFT JOIN webby_lab_task.formats
-            ON movies.format = formats.id
-            WHERE movies.name = :name');
-        $query->execute(['name' => $name]);
-
-        $movie_mapper = new MovieMapper(new DatabasePDO);
-        $movies_id = '';
-
-        while ($result = $query->fetch()) {
-            $movie = $movie_mapper->movieFromArray($result);
-            $id = $movie->getId();
-
-            $this->movies[$id] = $movie;
-            $movies_id .= "$id,";
-        }
-        $movies_id = substr($movies_id, 0, -1);
+        $this->moviesByName($name);
+        $movies_id = $this->getMoviesIdStr();
 
         $query = $this->pdo->prepare("SELECT movies_actors.movie_id, actors.first_name, actors.last_name
             FROM webby_lab_task.movies_actors
@@ -78,6 +76,35 @@ class MoviesRetriever
         }
 
         return $this->movies;
+    }
+
+    private function moviesByName(string $name)
+    {
+        $query = $this->pdo->prepare('SELECT movies.id, movies.name, movies.year, formats.format
+            FROM webby_lab_task.movies
+            LEFT JOIN webby_lab_task.formats
+            ON movies.format = formats.id
+            WHERE movies.name = :name');
+        $query->execute(['name' => $name]);
+
+        $movie_mapper = new MovieMapper(new DatabasePDO);
+
+        while ($result = $query->fetch()) {
+            $movie = $movie_mapper->movieFromArray($result);
+            $id = $movie->getId();
+
+            $this->movies[$id] = $movie;
+        }
+    }
+
+    private function getMoviesIdStr()
+    {
+        $movies_id = '';
+        foreach ($this->movies as $key => $movie) {
+            $movies_id .= "$key,";
+        }
+
+        return substr($movies_id, 0, -1);
     }
 
     public function getMoviesByActor(string $actor) : array
@@ -90,41 +117,9 @@ class MoviesRetriever
             return [];
         }
 
-        $query = $this->pdo->prepare("SELECT movies_actors.movie_id, actors.first_name, actors.last_name
-            FROM webby_lab_task.movies_actors
-            LEFT JOIN webby_lab_task.actors
-            ON actors.id = actor_id
-            WHERE first_name = :first_name
-            AND last_name = :last_name
-            ");
-        $query->execute(['first_name' => $first_name, 'last_name' => $last_name]);
+        $movies_id = $this->moviesIdByActor($first_name, $last_name);
 
-        $result = $query->fetchAll();
-        // $movies_id = '';
-        // foreach ($result as $key => $value) {
-        //     $movies_id .= intval($value['movie_id']).',';
-        // }
-        // $movies_id = substr($movies_id, 0, -1);
-        $movies_id = $this->moviesIdToString($result);
-
-        $query = $this->pdo->query("SELECT movies.id, movies.name, movies.year, formats.format
-            FROM webby_lab_task.movies
-            LEFT JOIN webby_lab_task.formats
-            ON movies.format = formats.id
-            WHERE movies.id IN ($movies_id)");
-
-
-        $movie_mapper = new MovieMapper(new DatabasePDO);
-        $movies_id = '';
-
-        while ($result = $query->fetch()) {
-            $movie = $movie_mapper->movieFromArray($result);
-            $id = $movie->getId();
-
-            $this->movies[$id] = $movie;
-            $movies_id .= "$id,";
-        }
-        $movies_id = substr($movies_id, 0, -1);
+        $this->getMoviesIn($movies_id);
 
         $query = $this->pdo->prepare("SELECT movies_actors.movie_id, actors.first_name, actors.last_name
             FROM webby_lab_task.movies_actors
@@ -141,6 +136,38 @@ class MoviesRetriever
         }
 
         return $this->movies;
+    }
+
+    private function moviesIdByActor(string $first_name, string $last_name) : string
+    {
+        $query = $this->pdo->prepare("SELECT movies_actors.movie_id
+            FROM webby_lab_task.movies_actors
+            LEFT JOIN webby_lab_task.actors
+            ON actors.id = actor_id
+            WHERE first_name = :first_name
+            AND last_name = :last_name
+            ");
+        $query->execute(['first_name' => $first_name, 'last_name' => $last_name]);
+
+        return $this->moviesIdToString($query->fetchAll());
+    }
+
+    private function getMoviesIn($movies_id)
+    {
+        $query = $this->pdo->query("SELECT movies.id, movies.name, movies.year, formats.format
+            FROM webby_lab_task.movies
+            LEFT JOIN webby_lab_task.formats
+            ON movies.format = formats.id
+            WHERE movies.id IN ($movies_id)");
+
+        $movie_mapper = new MovieMapper(new DatabasePDO);
+
+        while ($result = $query->fetch()) {
+            $movie = $movie_mapper->movieFromArray($result);
+            $id = $movie->getId();
+
+            $this->movies[$id] = $movie;
+        }
     }
 
     private function moviesIdToString(array $movies_id) : string
