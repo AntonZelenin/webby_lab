@@ -36,3 +36,11 @@ CREATE TABLE `movies_actors` (
   FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`actor_id`) REFERENCES `actors` (`id`) ON DELETE RESTRICT
 );
+
+#/conf/db_params.ini
+
+host = 'localhost';
+database = 'webby_lab_task';
+user = 'root';
+password = '';
+charset = 'utf8';
