@@ -39,11 +39,14 @@ class MoviesRetriever
 
     private function getMoviesActors() : array
     {
-        $query = $this->pdo->prepare('SELECT movies_actors.movie_id, actors.first_name, actors.last_name
+        $movies_id = $this->getMoviesIdStr();
+
+        $query = $this->pdo->query("SELECT movies_actors.movie_id, actors.first_name, actors.last_name
             FROM webby_lab_task.movies_actors
             LEFT JOIN webby_lab_task.actors
             ON actors.id = actor_id
-            ');
+            WHERE movie_id IN ($movies_id)
+            ");
         $query->execute();
 
         return $query->fetchAll();
@@ -59,21 +62,9 @@ class MoviesRetriever
     public function getMoviesByName(string $name) : array
     {
         $this->moviesByName($name);
-        $movies_id = $this->getMoviesIdStr();
+        $movies_actors = $this->getMoviesActors();
 
-        $query = $this->pdo->prepare("SELECT movies_actors.movie_id, actors.first_name, actors.last_name
-            FROM webby_lab_task.movies_actors
-            LEFT JOIN webby_lab_task.actors
-            ON actors.id = actor_id
-            WHERE movie_id IN ($movies_id)
-            ");
-        $query->execute();
-
-        $result = $query->fetchAll();
-
-        foreach ($result as $key => $actor) {
-            $this->addActorToMovie($actor);
-        }
+        $this->distributeActors($movies_actors);
 
         return $this->movies;
     }
@@ -120,20 +111,9 @@ class MoviesRetriever
         $movies_id = $this->moviesIdByActor($first_name, $last_name);
 
         $this->getMoviesIn($movies_id);
+        $movies_actors = $this->getMoviesActors();
 
-        $query = $this->pdo->prepare("SELECT movies_actors.movie_id, actors.first_name, actors.last_name
-            FROM webby_lab_task.movies_actors
-            LEFT JOIN webby_lab_task.actors
-            ON actors.id = actor_id
-            WHERE movie_id IN ($movies_id)
-            ");
-        $query->execute();
-
-        $result = $query->fetchAll();
-
-        foreach ($result as $key => $actor) {
-            $this->addActorToMovie($actor);
-        }
+        $this->distributeActors($movies_actors);
 
         return $this->movies;
     }
