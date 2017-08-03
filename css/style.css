@@ -1,4 +1,4 @@
-html body .sidebar {
+html, body {
     height: 100%;
 }
 
@@ -15,14 +15,16 @@ body {
 
 .sidebar {
     background: #f1f1f1;
+    height: 100%;
     width: 20%;
     float: left;
     min-width: 300px;
 }
 
 .upload {
-    position: relative;
-    top: 35%;
+    position: absolute;
+    width: 20%;
+    top: 90%;
 }
 
 .movie {

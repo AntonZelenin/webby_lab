@@ -5,7 +5,6 @@ class DatabasePDO {
 
     public function __construct() {
         $conf = parse_ini_file(ROOT.'/conf/db_params.ini', true);
-        $conf = $conf['movies_database'];
 
         $host = $conf['host'];
         $database = $conf['database'];
