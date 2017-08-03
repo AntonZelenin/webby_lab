@@ -1,11 +1,9 @@
 <?php
 
-// require_once 'autoload.php';
-
 class Actor
 {
-    public $first_name;
-    public $last_name;
+    private $first_name;
+    private $last_name;
 
     public function __construct(string $first_name, string $last_name)
     {
