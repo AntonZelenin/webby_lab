@@ -13,6 +13,11 @@ class MoviesRetriever
     public function getAllMovies() : array
     {
         $this->getMovies();
+
+        if (empty($this->movies)) {
+            return [];
+        }
+
         $movies_actors = $this->getMoviesActors();
 
         $this->distributeActors($movies_actors);
@@ -23,6 +28,11 @@ class MoviesRetriever
     public function getMoviesByName(string $name) : array
     {
         $this->moviesByName($name);
+
+        if (empty($this->movies)) {
+            return [];
+        }
+
         $movies_actors = $this->getMoviesActors();
 
         $this->distributeActors($movies_actors);
@@ -34,17 +44,22 @@ class MoviesRetriever
     {
         $temp = explode(' ', trim($actor));
 
+        if (!isset($temp[0]) || !isset($temp[1])) {
+            return [];
+        }
+
         $first_name = $temp[0];
         $last_name = $temp[1];
 
         $movies_id = $this->moviesIdByActor($first_name, $last_name);
 
-        $this->getMoviesIn($movies_id);
-        $movies_actors = $this->getMoviesActors();
-
-        if (!isset($movies_actors)) {
+        if (empty($movies_id)) {
             return [];
         }
+
+        $this->getMoviesIn($movies_id);
+
+        $movies_actors = $this->getMoviesActors();
 
         $this->distributeActors($movies_actors);
 
@@ -71,10 +86,6 @@ class MoviesRetriever
     private function getMoviesActors() : array
     {
         $movies_id = $this->getMoviesIdStr();
-
-        if (!isset($movies_actors)) {
-            return [];
-        }
 
         $query = $this->pdo->query("SELECT movies_actors.movie_id, actors.first_name, actors.last_name
             FROM webby_lab_task.movies_actors
