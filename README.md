@@ -1,7 +1,7 @@
 # webby_lab
 
 CREATE DATABASE webby_lab_task;
-USE DATABASE webby_lab_task;
+USE webby_lab_task;
 
 CREATE TABLE `actors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
