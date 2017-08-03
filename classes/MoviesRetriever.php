@@ -100,11 +100,12 @@ class MoviesRetriever
         $query->execute(['first_name' => $first_name, 'last_name' => $last_name]);
 
         $result = $query->fetchAll();
-        $movies_id = '';
-        foreach ($result as $key => $value) {
-            $movies_id .= intval($value['movie_id']).',';
-        }
-        $movies_id = substr($movies_id, 0, -1);
+        // $movies_id = '';
+        // foreach ($result as $key => $value) {
+        //     $movies_id .= intval($value['movie_id']).',';
+        // }
+        // $movies_id = substr($movies_id, 0, -1);
+        $movies_id = $this->moviesIdToString($result);
 
         $query = $this->pdo->query("SELECT movies.id, movies.name, movies.year, formats.format
             FROM webby_lab_task.movies
@@ -140,6 +141,16 @@ class MoviesRetriever
         }
 
         return $this->movies;
+    }
+
+    private function moviesIdToString(array $movies_id) : string
+    {
+        $movies_id_str = '';
+        foreach ($movies_id as $key => $value) {
+            $movies_id_str .= intval($value['movie_id']).',';
+        }
+
+        return substr($movies_id_str, 0, -1);
     }
 
     private function addActorToMovie(array $actor)
