@@ -1,5 +1,6 @@
 html, body {
     height: 100%;
+    font-family: 'Lato', sans-serif;
 }
 
 body {
@@ -7,33 +8,49 @@ body {
 }
 
 .main {
+    position: relative;
     height: 100%;
-    /*width: 80%;*/
+    width: 80%;
+    margin-left: 20%;
     float: left;
     overflow-y: auto;
 }
 
+.button {
+    margin-top: 10px;
+}
+
+.textbox {
+    margin-bottom: 5px;
+}
+
 .sidebar {
+    position: relative;
+    padding-left: 0.5%;
+    font-weight: bold;
     background: #f1f1f1;
     height: 100%;
     width: 20%;
     float: left;
-    min-width: 300px;
 }
 
 .upload {
     position: absolute;
-    width: 20%;
-    top: 90%;
+    top: 87%;
+    display: flex;
+    flex-direction: column;
 }
 
 .movie {
+    display: flex;
+    align-items: center;
     height: 30px;
 }
 
 .movie:hover {
-    background: #d8e7ff;
-    text-decoration: underline;
+    background: #ebecef;
+    font-weight: bold;
+    color: #666699
 }
 
 span {
@@ -42,6 +59,18 @@ span {
 
 span:hover {
     cursor: pointer;
+}
+
+.add-movie {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+.search {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
 }
 
 .modal {
@@ -83,17 +112,11 @@ span:hover {
 }
 
 .del {
-    position: relative;
-    color: white;
+    color: #dbdbdb;
+    position: absolute;
+    left: 97%;
     font-size: 28px;
     font-weight: bold;
-}
-
-.del:hover,
-.del:focus {
-    color: #ff0000;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 
@@ -106,7 +129,9 @@ span:hover {
 }
 
 .close:hover,
-.close:focus {
+.close:focus,
+.del:hover,
+.del:focus {
     color: #ff0000;
     text-decoration: none;
     cursor: pointer;

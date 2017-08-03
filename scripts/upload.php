@@ -17,7 +17,6 @@ if ($_FILES['file']['size'] >= MAX_FILE_SIZE) {
     die("File is too large");
 }
 
-// $contents = htmlspecialchars(strip_tags(file_get_contents($_FILES["file"]["tmp_name"])));
 $contents = strip_tags(file_get_contents($_FILES["file"]["tmp_name"]));
 
 preg_match_all('/Title: (.+).*\s*Release Year: (\d+).*\s*Format: (.+).*\s*Stars: (.+).*\s*/', $contents, $out);

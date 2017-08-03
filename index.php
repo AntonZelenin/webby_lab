@@ -30,46 +30,57 @@ if (isset($_POST['name'])) {
  <html>
      <head>
          <title>Movies</title>
+         <meta name="viewport" content="width=device-width, initial-scale=1">
+         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
          <link rel="stylesheet" type="text/css" href="/css/style.css" />
          <script src="/js/jquery-3.2.1.js"></script>
+
+         <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
      </head>
 
      <body>
-         <div class="sidebar">
-             <form action="/scripts/addMovie.php" method="post" class="add-movie">
-                 Movie Title:<br />
-                 <input type="text" name="name" placeholder="e.g. Matrix" required /><br />
-                 Release Year:<br />
-                 <input type="number" min='1900' max='2017' name="year" placeholder="e.g. 1999" required /><br />
-                 Format: <br />
-                 <input type="text" name="format" placeholder="e.g. DVD" required /><br />
-                 Stars:<br />
-                 <input type="text" name="actors" placeholder="e.g. Keanu Reeves, Laurence Fishburne" required /><br />
+         <div class="sidebar w3-sidebar">
+             <form action="/scripts/addMovie.php" method="post" >
+                 <div class="add-movie">
+                     Movie Title:<br />
+                     <input type="text" class="textbox" name="name" placeholder="e.g. Matrix" required /><br />
+                     Release Year:<br />
+                     <input type="number" min='1900' class="textbox" max='2017' name="year" placeholder="e.g. 1999" required /><br />
+                     Format: <br />
+                     <input type="text" name="format" class="textbox" placeholder="e.g. DVD" required /><br />
+                     Stars:<br />
+                     <input type="text" name="actors" placeholder="e.g. Keanu Reeves, Laurence Fishburne" required /><br />
+                </div>
 
-                 <input type="Submit" value="Add Movie" />
+                 <input type="Submit" class="button" value="Add Movie" />
              </form>
 
 
 
              <form action="index.php" method="post">
-                 Search by movie name:<br />
-                 <input type="text" name='name' placeholder="e.g. Jaws" required />
-                 <input type="submit" value="Search" />
+                 <div class="search">
+                     Search by movie name:<br />
+                     <input type="text" name='name' placeholder="e.g. Jaws" required />
+                 </div>
+                 <input type="submit" class="button" value="Search" />
              </form>
 
              <form action="index.php" method="post">
-                 Search by actor name:<br />
-                 <input type="text" name='actor' placeholder="e.g. Robert Shaw" required />
-                 <input type="submit" value="Search" />
+                 <div class="search">
+                     Search by actor name:<br />
+                     <input type="text" name='actor' placeholder="e.g. Robert Shaw" required />
+                 </div>
+                 <input type="submit" class="button" value="Search" />
              </form>
 
              <form action="/scripts/upload.php" method="post" class="upload" enctype="multipart/form-data">
                  Select file to upload:
                  <input type="file" name="file" id="file" required >
-                 <input type="submit" value="Upload" name="submit">
+                 <input type="submit" class="button" value="Upload" name="submit">
              </form>
 
-             <input type="button" value="Show all" onclick="reset()" />
+             <input type="button" class="button" value="Show all" onclick="reset()" />
          </div>
 
         <div class="main">
@@ -84,7 +95,7 @@ if (isset($_POST['name'])) {
 
                 echo "<div class='movie' movie_id='$id'>
                                 <span onclick='showInfo(this.parentElement)'>$name ($year)</span>
-                                <span class='del' id='delete' onclick='del(this.parentElement)'>&times;</span>
+                                <div class='del' id='delete' onclick='del(this.parentElement)'>&times;</div>
                             </div>".
                             "<div id='$id' class='modal'>
                               <div class='modal-content'>
