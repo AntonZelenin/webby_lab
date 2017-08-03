@@ -60,12 +60,6 @@ class MovieMapper
         }
     }
 
-    public function delete(Movie $movie)
-    {
-        $query = $this->pdo->prepare('DELETE FROM webby_lab_task.movies WHERE id = :id');
-        $query->execute(['id' => $movie->getId()]);
-    }
-
     public function movieFromArray($array) : Movie
     {
         $movie = new Movie($array['id']);
