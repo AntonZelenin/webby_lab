@@ -22,7 +22,7 @@ if (isset($_POST['name'])) {
 
     $movies = $movies_retriever->getMoviesByActor($actor);
 } else {
-    $movies = (new MoviesRetriever($pdo))->getAllMovies();
+    $movies = $movies_retriever->getAllMovies();
 }
 
  ?>

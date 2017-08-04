@@ -4,16 +4,11 @@ define ('ROOT', __DIR__.'/..');
 
 require_once ROOT.'/scripts/autoload.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if (isset($_POST['name']) && isset($_POST['year']) && isset($_POST['format']) && isset($_POST['actors'])) {
     $name = htmlspecialchars(strip_tags($_POST['name']));
     $year = intval($_POST['year']);
     $format = htmlspecialchars(strip_tags($_POST['format']));
     $actors = explode(',', htmlspecialchars(strip_tags(trim($_POST['actors']))));
-
-    if (!$name || !$year || !$format || !$actors) {
-        header("Location: /");
-        die;
-    }
 
     $movie = new Movie;
     $movie->setName($name);
@@ -33,6 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     (new MovieMapper(new DatabasePDO))->save($movie);
 
-    header("Location: /");
-
 }
+
+header("Location: /");

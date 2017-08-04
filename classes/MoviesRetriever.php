@@ -19,7 +19,6 @@ class MoviesRetriever
         }
 
         $movies_actors = $this->getMoviesActors();
-
         $this->distributeActors($movies_actors);
 
         return $this->movies;
@@ -34,7 +33,6 @@ class MoviesRetriever
         }
 
         $movies_actors = $this->getMoviesActors();
-
         $this->distributeActors($movies_actors);
 
         return $this->movies;
@@ -62,7 +60,6 @@ class MoviesRetriever
         $movies_actors = $this->getMoviesActors();
 
         $this->distributeActors($movies_actors);
-
         return $this->movies;
     }
 
@@ -156,7 +153,7 @@ class MoviesRetriever
         return substr($movies_id_str, 0, -1);
     }
 
-    private function getMoviesIdStr()
+    private function getMoviesIdStr() : string
     {
         $movies_id = '';
         foreach ($this->movies as $key => $movie) {
