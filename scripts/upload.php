@@ -10,6 +10,8 @@ require 'autoload.php';
 
 $permitted = 'text/plain';
 
+print_r($_FILES);
+
 if ($_FILES['file']['type'] != $permitted) {
     die("Not permitted filetype");
 }

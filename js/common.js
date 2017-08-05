@@ -119,7 +119,7 @@ function close(elem) {
 }
 
 function del(elem) {
-    var id = elem.getAttribute('movie_id');
+    var id = elem.getAttribute('movie-id');
 
     $.post(
         '/scripts/deleteMovie.php',

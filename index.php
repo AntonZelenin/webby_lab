@@ -44,14 +44,14 @@
                 <input type="submit" class="button" value="Search" onclick="submitForm(this.parentElement)" />
             </div>
 
-            <div>
+            <input type="button" class="button" value="Show all" onclick="reset()" />
+            <input type="button" id="order" value="Order by name" onclick="order_list()">
+
+            <form action="/scripts/upload.php" class="upload" method="post" enctype="multipart/form-data">
                 Select file to upload:
                 <input type="file" name="file" id="file" required />
                 <input type="submit" class="button" value="Upload" name="submit" />
             </div>
-
-            <input type="button" class="button" value="Show all" onclick="reset()" />
-            <input type="button" id="order" value="Order by name" onclick="order_list()">
         </div>
 
         <div class="main" id="main"></div>
