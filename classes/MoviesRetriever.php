@@ -10,7 +10,7 @@ class MoviesRetriever
         $this->pdo = $pdo->getConnection();
     }
 
-    public function getAllMovies() : array
+    public function getAllMovies(bool $order) : array
     {
         $this->getMovies();
 
@@ -24,9 +24,9 @@ class MoviesRetriever
         return $this->movies;
     }
 
-    public function getMoviesByName(string $name) : array
+    public function getMoviesByName(string $name, bool $order) : array
     {
-        $this->moviesByName($name);
+        $this->moviesByName($name, $order);
 
         if (empty($this->movies)) {
             return [];
@@ -38,7 +38,7 @@ class MoviesRetriever
         return $this->movies;
     }
 
-    public function getMoviesByActor(string $actor) : array
+    public function getMoviesByActor(string $actor, bool $order) : array
     {
         $temp = explode(' ', trim($actor));
 
@@ -55,20 +55,22 @@ class MoviesRetriever
             return [];
         }
 
-        $this->getMoviesIn($movies_id);
+        $this->getMoviesIn($movies_id, $order);
 
         $movies_actors = $this->getMoviesActors();
-
         $this->distributeActors($movies_actors);
+
         return $this->movies;
     }
 
     private function getMovies()
     {
-        $query = $this->pdo->prepare('SELECT movies.id, movies.name, movies.year, formats.format
+        $query = 'SELECT movies.id, movies.name, movies.year, formats.format
             FROM webby_lab_task.movies
             LEFT JOIN webby_lab_task.formats
-            ON movies.format = formats.id');
+            ON movies.format = formats.id';
+
+        $query = $this->pdo->prepare($query);
         $query->execute();
 
         $movie_mapper = new MovieMapper(new DatabasePDO);
@@ -89,7 +91,7 @@ class MoviesRetriever
             LEFT JOIN webby_lab_task.actors
             ON actors.id = actor_id
             WHERE movie_id IN ($movies_id)
-            ");
+        ");
 
         return $query->fetchAll();
     }
@@ -97,26 +99,27 @@ class MoviesRetriever
     private function distributeActors($actors)
     {
         foreach ($actors as $key => $actor) {
-            $this->addActorToMovie($actor);
+            $movie_id = $actor['movie_id'];
+            $first_name = $actor['first_name'];
+            $last_name = $actor['last_name'];
+
+            $this->movies[$movie_id]->addActor(new Actor($first_name, $last_name));
         }
     }
 
-    private function addActorToMovie(array $actor)
+    private function moviesByName(string $name, bool $order)
     {
-        $movie_id = $actor['movie_id'];
-        $first_name = $actor['first_name'];
-        $last_name = $actor['last_name'];
-
-        $this->movies[$movie_id]->addActor(new Actor($first_name, $last_name));
-    }
-
-    private function moviesByName(string $name)
-    {
-        $query = $this->pdo->prepare('SELECT movies.id, movies.name, movies.year, formats.format
+        $query = 'SELECT movies.id, movies.name, movies.year, formats.format
             FROM webby_lab_task.movies
             LEFT JOIN webby_lab_task.formats
             ON movies.format = formats.id
-            WHERE movies.name = :name');
+            WHERE movies.name = :name';
+
+        if ($order) {
+            $query .= " ORDER BY name";
+        }
+
+        $query = $this->pdo->prepare($query);
         $query->execute(['name' => $name]);
 
         $movie_mapper = new MovieMapper(new DatabasePDO);
@@ -163,13 +166,19 @@ class MoviesRetriever
         return substr($movies_id, 0, -1);
     }
 
-    private function getMoviesIn($movies_id)
+    private function getMoviesIn($movies_id, bool $order)
     {
-        $query = $this->pdo->query("SELECT movies.id, movies.name, movies.year, formats.format
+        $query = "SELECT movies.id, movies.name, movies.year, formats.format
             FROM webby_lab_task.movies
             LEFT JOIN webby_lab_task.formats
             ON movies.format = formats.id
-            WHERE movies.id IN ($movies_id)");
+            WHERE movies.id IN ($movies_id)";
+
+        if ($order) {
+            $query .= " ORDER BY name";
+        }
+
+        $query = $this->pdo->query($query);
 
         $movie_mapper = new MovieMapper(new DatabasePDO);
 

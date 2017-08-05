@@ -36,8 +36,10 @@ class MovieMapper
         $actors_values = '';
 
         foreach ($actors as $key => $actor) {
-            $first_name = $this->pdo->quote($actor->getFirstName());
-            $last_name = $this->pdo->quote($actor->getLastName());
+            // $first_name = $this->pdo->quote($actor->getFirstName());
+            // $last_name = $this->pdo->quote($actor->getLastName());
+            $first_name = $this->pdo->quote($actor->first_name);
+            $last_name = $this->pdo->quote($actor->last_name);
             $actors_values .= "($first_name, $last_name), ";
         }
 
@@ -56,7 +58,8 @@ class MovieMapper
     {
         foreach ($actors as $key => $actor) {
             $query = $this->pdo->prepare('INSERT IGNORE INTO webby_lab_task.movies_actors (movie_id, actor_id) VALUES (:movie_id, (SELECT id FROM webby_lab_task.actors WHERE first_name = :first_name AND last_name = :last_name))');
-            $query->execute(['movie_id' => $movie_id, 'first_name' => $actor->getFirstName(), 'last_name' => $actor->getLastName()]);
+            // $query->execute(['movie_id' => $movie_id, 'first_name' => $actor->getFirstName(), 'last_name' => $actor->getLastName()]);
+            $query->execute(['movie_id' => $movie_id, 'first_name' => $actor->first_name, 'last_name' => $actor->last_name]);
         }
     }
 

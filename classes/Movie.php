@@ -68,4 +68,15 @@ class Movie
         return substr($actors, 0, -2);
     }
 
+    public function toArray() : array
+    {
+        $arr = [];
+
+        foreach ($this as $key => $value) {            
+            $arr[$key] = $value;
+        }
+
+        return $arr;
+    }
+
 }
