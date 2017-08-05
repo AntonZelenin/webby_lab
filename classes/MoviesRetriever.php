@@ -10,7 +10,7 @@ class MoviesRetriever
         $this->pdo = $pdo->getConnection();
     }
 
-    public function getAllMovies(bool $order) : array
+    public function getAllMovies() : array
     {
         $this->getMovies();
 
@@ -24,9 +24,9 @@ class MoviesRetriever
         return $this->movies;
     }
 
-    public function getMoviesByName(string $name, bool $order) : array
+    public function getMoviesByName(string $name) : array
     {
-        $this->moviesByName($name, $order);
+        $this->moviesByName($name);
 
         if (empty($this->movies)) {
             return [];
@@ -38,7 +38,7 @@ class MoviesRetriever
         return $this->movies;
     }
 
-    public function getMoviesByActor(string $actor, bool $order) : array
+    public function getMoviesByActor(string $actor) : array
     {
         $temp = explode(' ', trim($actor));
 
@@ -55,7 +55,7 @@ class MoviesRetriever
             return [];
         }
 
-        $this->getMoviesIn($movies_id, $order);
+        $this->getMoviesIn($movies_id);
 
         $movies_actors = $this->getMoviesActors();
         $this->distributeActors($movies_actors);
@@ -107,17 +107,13 @@ class MoviesRetriever
         }
     }
 
-    private function moviesByName(string $name, bool $order)
+    private function moviesByName(string $name)
     {
         $query = 'SELECT movies.id, movies.name, movies.year, formats.format
             FROM webby_lab_task.movies
             LEFT JOIN webby_lab_task.formats
             ON movies.format = formats.id
             WHERE movies.name = :name';
-
-        if ($order) {
-            $query .= " ORDER BY name";
-        }
 
         $query = $this->pdo->prepare($query);
         $query->execute(['name' => $name]);
@@ -166,17 +162,13 @@ class MoviesRetriever
         return substr($movies_id, 0, -1);
     }
 
-    private function getMoviesIn($movies_id, bool $order)
+    private function getMoviesIn($movies_id)
     {
         $query = "SELECT movies.id, movies.name, movies.year, formats.format
             FROM webby_lab_task.movies
             LEFT JOIN webby_lab_task.formats
             ON movies.format = formats.id
             WHERE movies.id IN ($movies_id)";
-
-        if ($order) {
-            $query .= " ORDER BY name";
-        }
 
         $query = $this->pdo->query($query);
 

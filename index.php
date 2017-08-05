@@ -1,4 +1,3 @@
-
 <html>
     <head>
         <title>Movies</title>
@@ -52,31 +51,33 @@
             </div>
 
             <input type="button" class="button" value="Show all" onclick="reset()" />
-            <input type="checkbox" id="order" onclick="reload()" /> Order by name
+            <input type="button" id="order" value="Order by name" onclick="order_list()">
         </div>
 
         <div class="main" id="main"></div>
 
         <template id="movie-template">
-            <div class='movie'>
-                <span id='movie-name-year' onclick='showInfo(this.parentElement)'>$name ($year)</span>
-                <div class='del' id='delete' onclick='del(this.parentElement)'>&times;</div>
-            </div>
+            <div class="movie-wrapper">
+                <div class='movie'>
+                    <span id='movie-name-year' onclick='showInfo(this.parentElement)'>$name ($year)</span>
+                    <div class='del' id='delete' onclick='del(this.parentElement)'>&times;</div>
+                </div>
 
-            <div class='modal'>
-                <div class='modal-content'>
-                    <div class='modal-header'>
-                        <span class='close'>&times;</span>
-                        <h2 id="movie-name"></h2>
+                <div class='modal'>
+                    <div class='modal-content'>
+                        <div class='modal-header'>
+                            <span class='close'>&times;</span>
+                            <h2 id="movie-name"></h2>
+                        </div>
+
+                        <div class='modal-body'>
+                            <p id="movie-id"></p>
+                            <p id="release-year"></p>
+                            <p id="format"></p>
+                            <p id="actors"></p>
+                        </div>
+
                     </div>
-
-                    <div class='modal-body'>
-                        <p id="movie-id"></p>
-                        <p id="release-year"></p>
-                        <p id="format"></p>
-                        <p id="actors"></p>
-                    </div>
-
                 </div>
             </div>
         </template>

@@ -1,7 +1,25 @@
-function setMovies(data) {
+$(document).ready(getAll());
+
+function getAll() {
+    $.get(
+        '/scripts/getMovies.php',
+        {
+            all : 1,
+        },
+
+        function(data) {
+            var movies = getMovies(data);
+
+            show_movies(movies);
+        }
+    );
+}
+
+function getMovies(data) {
     var main = document.getElementById('main');
-    main.innerHTML = '';
     data = JSON.parse(data);
+
+    var movies = [];
 
     for (var key in data) {
         id = data[key]['id'];
@@ -25,30 +43,38 @@ function setMovies(data) {
         tmpl.querySelector('#format').innerText = "Format: " + format;
         tmpl.querySelector('#actors').innerText = "Actors: " + actors;
 
-        main.appendChild(tmpl);
+        movies.push(tmpl);
+    }
+
+    return movies;
+}
+
+function show_movies(movies) {
+    main.innerHTML = '';
+
+    for (var i = 0; i < movies.length; i++) {
+        main.appendChild(movies[i]);
     }
 }
 
-function getAll() {
-    order = (document.getElementById('order').checked) ? 1 : 0;
+function sort_movies(movies) {
+    movies = Array.prototype.slice.call(movies);
 
-    $.get(
-        '/scripts/getMovies.php',
-        {
-            all : 1,
-            order: order
-        },
+    movies.sort(function(a, b) {
+        var string_a = $(a).find("span").text();
+        var string_b = $(b).find("span").text();
 
-        function(data) {
-            setMovies(data);
-        }
-    );
+        return string_a.localeCompare(string_b);
+    });
+
+    return movies;
 }
 
-$(document).ready(getAll());
+function order_list() {
+    var movies = document.getElementsByClassName('movie-wrapper');
 
-function reload() {
-    window.location.reload();
+    movies = sort_movies(movies);
+    show_movies(movies);
 }
 
 function reset() {
@@ -57,17 +83,15 @@ function reset() {
 
 function submitForm(elem){
     var url = "/scripts/getMovies.php";
-    var order = (document.getElementById('order').checked) ? 1 : 0;
     var elemData = {};
 
     $(elem).find("input[name]").each(function (index, node) {
         elemData[node.name] = node.value;
     });
 
-    elemData['order'] = order;
-
     $.get(url, elemData, function(data) {
-        setMovies(data);
+        var movies = getMovies(data);
+        show_movies(movies);
     });
 }
 
