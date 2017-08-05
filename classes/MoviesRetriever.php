@@ -86,6 +86,10 @@ class MoviesRetriever
     {
         $movies_id = $this->getMoviesIdStr();
 
+        if (!$movies_id) {
+            return [];
+        }
+
         $query = $this->pdo->query("SELECT movies_actors.movie_id, actors.first_name, actors.last_name
             FROM webby_lab_task.movies_actors
             LEFT JOIN webby_lab_task.actors

@@ -29,7 +29,7 @@ function getMovies(data) {
         actors = '';
 
         for (var key2 in data[key]['actors']) {
-            actors += data[key]['actors'][key2]['first_name'] + data[key]['actors'][key2]['last_name'] + ', ';
+            actors += data[key]['actors'][key2]['first_name'] + " " + data[key]['actors'][key2]['last_name'] + ', ';
         }
         actors = actors.substring(0, actors.length - 2);
 
@@ -121,13 +121,14 @@ function close(elem) {
 function del(elem) {
     var id = elem.getAttribute('movie-id');
 
-    $.post(
-        '/scripts/deleteMovie.php',
-        {
+    $.ajax({
+        type: "POST",
+        url: '/scripts/deleteMovie.php',
+        data: {
             id: id
         },
-        function(data) {
-            window.location.reload();
+        success: function(){
+            $(elem).remove();
         }
-    );
+    });
 }

@@ -12,4 +12,4 @@ if (isset($_POST['id'])) {
     $query->execute(['id' => $movie_id]);
 }
 
-header("Location: /");
+header("HTTP/1.1 200 OK");
