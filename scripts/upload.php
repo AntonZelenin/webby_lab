@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 define ('MAX_FILE_SIZE', 1000000);
+define ('ROOT', __DIR__.'/..');
 
 require 'autoload.php';
 

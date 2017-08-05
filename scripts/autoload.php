@@ -1,8 +1,6 @@
 <?php
 
-function __autoload($class_name)
-{
-
+spl_autoload_register(function ($class_name) {
     $array_paths = array(
         ROOT.'/classes/'
     );
@@ -12,8 +10,10 @@ function __autoload($class_name)
 
         if (is_file($file_path)) {
             require $file_path;
-        } else {
-            throw new Exception("Error, file $file_path does not exist", 1);
+
+            return;
         }
     }
-}
+
+    throw new Exception("Error, file $class_name.php not found", 1);
+});

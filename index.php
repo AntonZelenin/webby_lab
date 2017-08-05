@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 define ('ROOT', __DIR__);
 
-require ROOT.'/scripts/autoload.php';
+require (ROOT.'/scripts/autoload.php');
 
 $pdo = new DatabasePDO;
 $movies_retriever = new MoviesRetriever($pdo);
