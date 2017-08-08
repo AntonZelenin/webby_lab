@@ -1,31 +1,47 @@
 html, body {
     height: 100%;
     font-family: 'Lato', sans-serif;
+    background: #ffffff;
 }
 
 body {
     margin: 0;
 }
 
-input[type="text"], input[type="number"] {
+input {
+    border-radius: 2px;
+    background: #ffffff;
+    color: #ffffff;
+}
+
+input[type=text], input[type=number], [type=file] {
     font-size: 18px;
-    border: 1px solid grey;
-    border-radius: 4px;
+    color: #5E6D81;
+    border: none;
+    padding: 6px 0;
+    border-radius: 2px;
     padding-left: 10px;
 }
 
-.wrapper {
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+label {
+    color: #5E6D81;
+}
+
+[type="button"], [type="Submit"] {
+    height: 35px;
+    width: 100px;
+    border: none;
+    overflow-x: hidden;
+    background: #5E6D81;
+    color: #ffffff;
+    font-weight: bold;
 }
 
 .sidebar {
+    background: #9EA7B3;
+    /*background: #323A45;*/
     display: flex;
     flex-direction: column;
-    background: #f1f1f1;
-    /*height: 100%;*/
     width: 17%;
     padding: 0 20px;
 }
@@ -33,6 +49,17 @@ input[type="text"], input[type="number"] {
 .main {
     width: 45%;
     overflow-y: auto;
+    background: #EAEDF1;
+    color: #5E6D81;
+    font-size: 17px;
+    padding-top: 10px;
+}
+
+.wrapper {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .form-wrapper {
@@ -64,14 +91,6 @@ input[type="text"], input[type="number"] {
     margin-right: 15px;
 }
 
-[type="button"], [type="Submit"] {
-    height: 35px;
-    width: 100px;
-    border: 1px solid grey;
-    border-radius: 4px;
-    overflow-x: hidden;
-}
-
 .order {
     width: 150px;
     /*overflow-x: hidden;*/
@@ -80,9 +99,11 @@ input[type="text"], input[type="number"] {
 .upload [type="Submit"] {
     margin-top: 10px;
     width: 100%;
+    background: #1FBBA6;
 }
 
 .upload {
+    background: #9EA7B3;
     margin-top: auto;
     display: flex;
     flex-direction: column;
@@ -164,7 +185,6 @@ span:hover {
 .del {
     position: absolute;
     color: #dbdbdb;
-    /*right: 10px;*/
     right: 1%;
     font-size: 28px;
     font-weight: bold;
@@ -195,4 +215,39 @@ span:hover {
 
 .modal-body {
     padding: 2px 16px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+
+.browse {
+    color: #5E6D81;
+}
+
+.browse label {
+    padding-left: 10px;
+    font-size: 17px;
+}
+
+
+.button {
+    border: 1px solid #333;
+    padding: 10px;
+    margin: 5px;
+    background: #777;
+    color: #fff;
+    width:75px;
+}
+
+.button:hover {
+    background: #333;
+    cursor: pointer;
 }

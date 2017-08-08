@@ -45,8 +45,13 @@
                 </div>
 
                 <form action="/scripts/upload.php" class="upload" method="post" enctype="multipart/form-data">
-                    Select file to upload:
-                    <input type="file" name="file" id="file" required />
+                    <label>Select file to upload:</label>
+                    <input type="file" name="file" style="display:none;" id="file" required />
+                    <div class="browse">
+                        <input type="button" value="Browse" id="uploadTrigger" />
+                        <label id="browse-label">No file selected</label>
+                    </div>
+                    <!-- <input type="button" id="uploadTrigger">Browse</div> -->
                     <input type="submit" value="Upload" name="submit" />
                 </form>
             </div>

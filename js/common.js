@@ -1,6 +1,10 @@
 $(document).ready(getAll());
 
 function getAll() {
+    $("#browse-label").empty();
+    var lable_text = ($('#file').val().split('\\').pop() == '') ? 'No file selected' : ($('#file').val().split('\\').pop());
+    $('#browse-label').append(lable_text);
+
     $.get(
         '/scripts/getMovies.php',
         {
@@ -132,3 +136,14 @@ function del(elem) {
         }
     });
 }
+
+
+
+$("#uploadTrigger").click(function(){
+   $("#file").click();
+});
+
+$('#file').change(function(){
+    $("#browse-label").empty();
+    $('#browse-label').append($('#file').val().split('\\').pop());
+});
