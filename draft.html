@@ -1,0 +1,56 @@
+<!doctype HTML>
+<html>
+    <head>
+        <style>
+            html, body {
+                height: 100%;
+            }
+
+            .div1 {
+                position: relative;
+                top: 30%;
+                left: 40%;
+                height: 400px;
+                width: 15%;
+                background-color: yellow;
+                display: flex;
+                flex-direction: column;
+                padding: 20px 15px;
+            }
+
+            .div1 input {
+                margin-top: 15px;
+            }
+
+            .double {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            .double input {
+                width: 40%;
+            }
+
+            /** {
+                box-sizing: border-box;
+            }*/
+
+        </style>
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <div class="div1">
+                <input type="text" name="title" placeholder="Movie Title" required />
+
+                <div class="double">
+                    <input type="number" name="year" placeholder="Release Year" required />
+                    <input type="text" name="format" placeholder="Format" required />
+                </div>
+
+                <input  type="text" name="actors" placeholder="Actors" required />
+            </div>
+        </div>
+    </body>
+</html>
