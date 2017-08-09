@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="form-wrapper flex-row">
-                    <input type="button" value="Show all" onclick="reset()" />
+                    <input type="button" value="Reset" onclick="reset()" />
                     <input type="button" class="order" id="order" value="Order by name" onclick="order_list()">
                 </div>
 

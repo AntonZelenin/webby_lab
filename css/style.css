@@ -37,6 +37,10 @@ label {
     font-weight: bold;
 }
 
+[type="button"]:hover, [type="Submit"]:hover {
+    background: #788EAC;
+}
+
 .sidebar {
     background: #9EA7B3;
     /*background: #323A45;*/
@@ -96,17 +100,21 @@ label {
     /*overflow-x: hidden;*/
 }
 
-.upload [type="Submit"] {
-    margin-top: 10px;
-    width: 100%;
-    background: #1FBBA6;
-}
-
 .upload {
     background: #9EA7B3;
     margin-top: auto;
     display: flex;
     flex-direction: column;
+}
+
+.upload [type=submit]:hover {
+    background: #58E9D5;
+}
+
+.upload [type="Submit"] {
+    margin-top: 10px;
+    width: 100%;
+    background: #1FBBA6;
 }
 
 .movie {
